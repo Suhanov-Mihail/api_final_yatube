@@ -8,7 +8,9 @@ from .serializers import (CommentSerializer, FollowSerializer,
 from .permissions import IsAuthorOrReadOnly
 from posts.models import Follow, Group, Post
 
+
 class PostViewSet(viewsets.ModelViewSet):
+    """Позволяет выполнять любые операции CRUD с моделью Post"""
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthorOrReadOnly]
@@ -33,12 +35,14 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
+    """Позволяет только получать данные модели Group"""
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
 class FollowViewSet(viewsets.ModelViewSet):
+    """Позволяет только получать данные модели Follow"""
     queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     filter_backends = (filters.SearchFilter, )
