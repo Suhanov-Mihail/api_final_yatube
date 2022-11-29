@@ -6,6 +6,7 @@ from rest_framework.pagination import LimitOffsetPagination
 from .serializers import (CommentSerializer, FollowSerializer,
                           GroupSerializer, PostSerializer)
 from .permissions import IsAuthorOrReadOnly
+
 from posts.models import Follow, Group, Post
 
 
@@ -43,14 +44,13 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
 
 class FollowViewSet(viewsets.ModelViewSet):
     """Позволяет только получать данные модели Follow"""
-    queryset = Follow.objects.all()
     serializer_class = FollowSerializer
     filter_backends = (filters.SearchFilter, )
     search_fields = ('following__username', )
     http_method_names = ['get', 'post']
 
-    def get_queryset(self):
-        return self.request.user.follower.all()
+    def get_queryset(self): 
+        return Follow.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
