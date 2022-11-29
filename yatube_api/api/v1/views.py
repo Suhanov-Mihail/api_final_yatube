@@ -49,7 +49,7 @@ class FollowViewSet(viewsets.ModelViewSet):
     search_fields = ('following__username', )
     http_method_names = ['get', 'post']
 
-    def get_queryset(self): 
+    def get_queryset(self):
         return Follow.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
